@@ -1,4 +1,7 @@
+var path = require('path')
 var gulp = require("gulp")
+var karma = require('gulp-karma')
+var mocha = require('gulp-mocha')
 var eslint = require("gulp-eslint")
 
 var srcPath = {

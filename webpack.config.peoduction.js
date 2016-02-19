@@ -1,28 +1,37 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path')
+const webpack = require('webpack')
+const cdn = require('./config').cdn
 
 module.exports = {
   entry: {
-    bundle: [
-      'webpack-hot-middleware/client?reload=true',
-      './app/javascript/index.jsx'
-    ]
+    bundle: './app/javascript/index.jsx'
   },
   output: {
-    path: path.join(__dirname, '/public/app/'),
+    path: path.join(__dirname, '/public/app/[hash]'),
     filename: '[name].js',
-    publicPath: '/app/'
+    publicPath: `${cdn}/app/[hash]/`,
+    chunkFilename: '[id].chunk.js'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.ProvidePlugin({
       'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
     }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.LimitChunkCountPlugin({maxChunks: 15}),
-    new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000})
+    new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}),
+    require('./writeStatsToFile'),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production'),
+      }
+    }),
   ],
   resolve: {
     extensions: ['', '.js', '.jsx']
