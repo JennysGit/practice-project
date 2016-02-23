@@ -80,5 +80,18 @@
     "supertest": "^0.12.1",
     "through2": "^2.0.0",
     "webpack": "^1.12.13"
-  }
+  },
+  "description": "practice",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RicoLiu/practice-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RicoLiu/practice-project/issues"
+  },
+  "homepage": "https://github.com/RicoLiu/practice-project#readme"
 }
