@@ -83,13 +83,13 @@ class Earth extends React.PureComponent {
     //渲染纹理
     async function render () {
       let worldBg = await util.loadImg(world);
-      let hotBg = await util.loadImg(hot);
+      // let hotBg = await util.loadImg(hot);
       ctx.drawImage(worldBg, 0, 0, width, height);
       data.forEach((item) => {
         let lng = item.lnglat[0];
         let lat = item.lnglat[1];
         let {x, y} = util.lnglatToXY({lng, lat}, width, height);
-        ctx.drawImage(hotBg, x - size / 2, y - size / 2, size, size);
+        // ctx.drawImage(hotBg, x - size / 2, y - size / 2, size, size); //添加线条光点
       });
       let texture = new THREE.Texture(canvas);
       texture.needsUpdate = true;
@@ -99,8 +99,18 @@ class Earth extends React.PureComponent {
   }
   componentDidMount () {
     let camera, scene, renderer;
-    let width = util.css(this.el, 'width');
-    let height = util.css(this.el, 'height');
+    let windowHalfX = window.innerWidth / 2;
+    let windowHalfY = window.innerHeight / 2;
+    // let mouseX = 0;
+    // let mouseY = 0;
+    // let width = util.css(this.el, 'width');
+    // let height = util.css(this.el, 'height');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    //鼠标
+    let mouse = new THREE.Vector2();
+    //鼠标拾取
+    let raycaster = new THREE.Raycaster();
     //场景
     scene = new THREE.Scene();
     //渲染器
@@ -131,12 +141,32 @@ class Earth extends React.PureComponent {
       );
       earthMesh.position.set(center.x, center.y, center.z);
       group.add(earthMesh);
-      this.addLines(group);
+      // this.addLines(group);//添加光线
       scene.add(group);
+
+      // document.addEventListener( 'mousemove', onMouseMove, false );      
+      window.addEventListener( 'resize', onWindowResize, false );
+
+      // function onMouseMove( event ) {
+      //   mouse.x = ( event.clientX - windowHalfX );
+      //   mouse.y = ( event.clientY - windowHalfY );
+        
+      // }
+      function onWindowResize() {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+      }
       animate();
       function animate () {
         requestAnimationFrame(animate);
-        group.rotation.y += 0.01;
+        group.position.x = THREE.Math.clamp( group.position.x, -400, 400 );
+        // camera.position.y = THREE.Math.clamp( camera.position.y, -400, 400 );
+        // camera.position.z = THREE.Math.clamp( camera.position.z, -400, 400 );
+        // console.log(earthMesh.position.x);
+        group.rotation.y -= 0.005; //物体旋转速度
         //group.rotation.x += 0.001;
         group.children.forEach((item) => {
           if (/line/.test(item.name)) {
@@ -153,6 +183,11 @@ class Earth extends React.PureComponent {
             item.geometry.setDrawRange(0, next);
           }
         });
+
+        // camera.position.x += ( mouse.x - camera.position.x ) * 0.05;
+        // camera.position.y += ( - mouse.y - camera.position.y ) * 0.05;
+        // camera.lookAt( scene.position );
+
         renderer.render(scene, camera);
       }
     });

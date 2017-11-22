@@ -1,7 +1,6 @@
 {
   "name": "earth",
   "version": "0.0.0",
-  "description": "3d地球的一些特效",
   "main": "index.js",
   "entry": {
     "index": "./index.js"
@@ -10,7 +9,6 @@
     "build": "atool-build --config webpack.config.build.js -o ./dist/0.0.0",
     "start": "dora --plugins webpack,webpack-hmr"
   },
-  "author": "wuyue.lwy@alibaba-inc.com",
   "license": "ISC",
   "devDependencies": {
     "atool-build": "^1.0.2",

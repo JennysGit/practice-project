@@ -6,6 +6,7 @@ import Star from './src/star';
 //地球
 import Earth from './src/earth';
 import EarthSpline from './src/earthSpline';
+
 let type = /line/.test(location.href) ? 1 : 0;
 let child = null;
 async function render () {
