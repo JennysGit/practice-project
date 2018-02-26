@@ -9,7 +9,7 @@ const DATA = require('./models/data');
   });
   const page = await browser.newPage();
 
-  const URL = 'http://h5.izhangchu.com/dishes_view/index.html?&dishes_id=278';
+  const URL = 'http://h5.izhangchu.com/dishes_view/index.html?&dishes_id=275';
 
   const FOODS_TITLE_SELECTOR = '#DishesView-wrap > div:nth-child(2) > div.goods-show > div > h5';
   const FOODS_SUBTITLE_SELECTOR = '#DishesView-wrap > div:nth-child(2) > div.goods-show > div > p';
@@ -76,13 +76,13 @@ const DATA = require('./models/data');
         'title': title,
         'subtitle': subtitle,
         'image': image,
-        'steps': JSON.stringify(step),
-        'ingredients': JSON.stringify(ingredients),
-        'common': JSON.stringify(common),
-        'guide': JSON.stringify(guide),
-        'suits': JSON.stringify(suit),
-        'restraints': JSON.stringify(restraint),
-        'tags': JSON.stringify([tag1, tag2, tag3]),
+        'steps': step,
+        'ingredients': ingredients,
+        'common': common,
+        'guide': guide,
+        'suits': suit,
+        'restraints': restraint,
+        'tags': [tag1, tag2, tag3],
       };
       return content;
     }, FOODS_TITLE_SELECTOR, FOODS_SUBTITLE_SELECTOR, FOODS_IMAGE_SELECTOR, FOODS_TAG1_SELECTOR, FOODS_TAG2_SELECTOR, FOODS_TAG3_SELECTOR);
@@ -97,7 +97,7 @@ const DATA = require('./models/data');
 
 function updateData (obj) {
   // const DB_URL = 'mongodb://localhost/healthcare';
-  const DB_URL = 'mongodb://rico:rico@ds247678.mlab.com:47678/zhangchu-foods';
+  const DB_URL = 'mongodb://root:123456@ds247678.mlab.com:47678/zhangchu-foods';
   if (mongoose.connection.readyState == 0) {
     mongoose.connect(DB_URL);
 
